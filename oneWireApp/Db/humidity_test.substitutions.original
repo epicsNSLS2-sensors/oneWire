@@ -1,0 +1,19 @@
+file "ds18b20_slow.template"
+{
+pattern { Sys,      Dev  ,   PORT,  ID  		, NextRawWf			}
+  { 3IDC  , "{SENS:001}"  , HA7E_1, "28000005692F8C28"  , "3IDC{SENS:002}Val:Raw-Wf"	}
+  { 3IDC  , "{SENS:002}"  , HA7E_1, "A30000056A147B28"  , "3IDC{SENS:003}Val:Raw-Wf"	}
+  { 3IDC  , "{SENS:003}"  , HA7E_1, "540000056A558328"  , "3IDC{SENS:004}Val:Raw-Wf"	}
+  { 3IDC  , "{SENS:004}"  , HA7E_1, "FA0000056A44E728"  , "3IDC{SENS:005}Val:Raw-Wf"	}
+  { 3IDC  , "{SENS:005}"  , HA7E_1, "600000056A8A2028"  , "3IDC{SENS:006}Val:Raw-Wf"	}
+  { 3IDC  , "{SENS:006}"  , HA7E_1, "BB000005692A5B28"  , "3IDC{SENS:007}Val:Page0-Wf"	}
+
+}
+
+
+file "ds2438.template"
+{
+pattern { Sys,      Dev  ,   PORT,  ID  }
+
+  { 3IDC  , "{SENS:007}"  , HA7E_1, "AF0000006CF5FD26"  }
+}

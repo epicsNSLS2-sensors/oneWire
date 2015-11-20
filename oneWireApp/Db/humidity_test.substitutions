@@ -1,0 +1,43 @@
+file "ds18b20_slow.template"
+{
+pattern { Sys,      Dev  ,   PORT,  ID  		, NextRawWf			,Offset	}
+#  { 5IDB  , "{SENS:001}"  , HA7E_1, "480000058EBF5828"  , "5IDB{SENS:002}Val:Raw-Wf"	,0}
+#  { 5IDB  , "{SENS:002}"  , HA7E_1, "8A0000058FCD4328"  , "5IDB{SENS:003}Val:Raw-Wf"	,0}
+#  { 5IDB  , "{SENS:003}"  , HA7E_1, "690000058E9FFF28"  , "5IDB{SENS:004}Val:Raw-Wf"	,0}
+#  { 5IDB  , "{SENS:004}"  , HA7E_1, "F30000058FBAB228"  , "5IDB{SENS:005}Val:Page0-Wf"	,0}
+
+# IXS 10IDA
+  { XF:10IDA  , "{SENS:001}"  , HA7E_A, "9B0000058FCF6C28"  , "XF:10IDA{SENS:002}Val:Raw-Wf"	,0}
+  { XF:10IDA  , "{SENS:002}"  , HA7E_A, "730000058FB0EC28"  , "XF:10IDA{SENS:003}Val:Raw-Wf"	,0}
+  { XF:10IDA  , "{SENS:003}"  , HA7E_A, "B80000058F870D28"  , "XF:10IDA{SENS:004}Val:Raw-Wf"	,0}
+  { XF:10IDA  , "{SENS:004}"  , HA7E_A, "360000058FB64B28"  , ""	,0}
+
+# IXS 10IDB bag
+#  { XF:10IDB  , "{SENS:001}"  , HA7E_B, "BB0000058FB60028"  , "XF:10IDB{SENS:002}Val:Raw-Wf"	,0}
+#  { XF:10IDB  , "{SENS:002}"  , HA7E_B, "260000058EFA3128"  , "XF:10IDB{SENS:003}Val:Raw-Wf"	,0}
+#  { XF:10IDB  , "{SENS:003}"  , HA7E_B, "FE0000058EB6A928"  , "XF:10IDB{SENS:004}Val:Raw-Wf"	,0}
+#  { XF:10IDB  , "{SENS:004}"  , HA7E_B, "290000058F9FF528"  , "XF:10IDB{SENS:005}Val:Page0-Wf"	,0}
+# IXS 10IDB hutch string
+  { XF:10IDB  , "{SENS:001}"  , HA7E_B, "EA0000056AB5DE28"  , "XF:10IDB{SENS:002}Val:Raw-Wf"	,0}
+  { XF:10IDB  , "{SENS:002}"  , HA7E_B, "AD0000058EB6F528"  , "XF:10IDB{SENS:003}Val:Raw-Wf"	,0}
+  { XF:10IDB  , "{SENS:003}"  , HA7E_B, "F70000058F45AB28"  , "XF:10IDB{SENS:004}Val:Raw-Wf"	,0}
+  { XF:10IDB  , "{SENS:004}"  , HA7E_B, "390000058E74E728"  , ""	,0}
+
+# IXS 10IDD
+  { XF:10IDD  , "{SENS:001}"  , HA7E_D, "660000058FBD6228"  , "XF:10IDD{SENS:002}Val:Raw-Wf"	,0}
+  { XF:10IDD  , "{SENS:002}"  , HA7E_D, "2F0000058F915E28"  , "XF:10IDD{SENS:003}Val:Raw-Wf"	,0}
+  { XF:10IDD  , "{SENS:003}"  , HA7E_D, "820000058F609D28"  , "XF:10IDD{SENS:004}Val:Page0-Wf"	,0}
+#  { XF:10IDD  , "{SENS:003}"  , HA7E_D, "820000058F609D28"  , "XF:10IDD{SENS:004}Val:Raw-Wf"	,0}
+}
+
+
+file "ds2438.template"
+{
+pattern { Sys,      Dev  ,   PORT,  ID                , Offset }
+#  { 5IDB  , "{SENS:005}"  , HA7E_1, "C60000006D4F4326", 10 }
+
+# IXS 10IDB bag
+#  { XF:10IDB  , "{SENS:005}"  , HA7E_B, "670000006D761826", 0.0 }
+# IXS 10IDD
+  { XF:10IDD  , "{SENS:004}"  , HA7E_D, "C20000006CDF9826", 0.0 }
+}

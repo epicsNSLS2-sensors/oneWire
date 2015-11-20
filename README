@@ -1,0 +1,11 @@
+The EPICS support is based on HA7E - ascii 1-Wire Host Adapter.
+The HA7E is a RS232 to 1-Wire interface in a very small ABS enclosure designed to provide an ASCII command set for RS232 serial hosts that need to accommodate Dallas Semiconductor iButton and 1-Wire devices. The HA7E relieves the host of the burden of generating the time–critical 1–Wire communication waveforms while supporting all 1-Wire devices with simple ASCII commands that can be easily generated. The HA7E does all the hard work of interfacing 1-Wire networks.
+
+It provides database for 1-Wire Temperature Sensor | Temperature/Humidity Mini-Prob and DS18B20 programmable resolution 1-wire digital thermometer.
+
+The 1WTH_PRB is a humidity sensor based on the Maxim DS2438 1-Wire Smart Battery Monitor and a Honeywell HIH-4000 humidity sensor. The DS2438 provides two A/D converters and a temperature sensor. 
+The DS18B20 ddigital thermometer provides 9-bit to 12-bit Celsius temperature measurements and has an alarm function with nonvolatile user-programmable upper and lower trigger points.
+
+Note: The config file in this directory will automaticly look for the st.cmd file in this directory unless another path is designated in the config file.
+
+

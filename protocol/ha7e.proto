@@ -1,0 +1,208 @@
+
+
+
+Terminator = CR;
+LockTimeout = 3000;
+WriteTimeout = 2000;
+ReadTimeout = 2000;
+ReplyTimeout = 1000;
+
+# Search the id of one-wire(temp, humi, adc) sensor
+search_1id {
+	out "S";
+	in "%16c";
+	out "R";
+	in  "";
+}
+
+# Search the id of one-wire(temp, humi, adc) sensor
+search_2id {
+	out "S";
+	in "%(\$1\$2ID-I.VAL)16c";
+	out "R";
+	in  "";
+	out "s";
+	in "%16c";
+	out "R";
+	in  "";
+}
+
+# Restore factory default settings
+reset_ds2438 {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W034E0000";
+	in  "4E0000";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W024800";
+	in  "4800";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W094E0100000000000000";
+	in  "4E0100000000000000";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W024801";
+	in  "4801";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W034E0001";
+	in  "4E0001";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W024800";
+	in  "4800";
+	out "R";
+	in  "";
+}
+
+# Read ds2438 status/configuration register to 0x0F 
+read_ds2438_config {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W02B800";
+	in  "%*s";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W0ABE00FFFFFFFFFFFFFFFF";
+	in  "BE00%16c";
+	out "R";
+}
+
+# Read ds2438 temperature, supply voltage Vdd and current
+read_ds2438_page0 {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W0144";
+	in  "44";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W01B4";
+	in  "B4";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W02B800";
+	in  "B800";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W0ABE00FFFFFFFFFFFFFFFF";
+	in  "BE00%16c";
+	out "R";
+	in  "";
+}
+
+read_ds2438_page3 {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W02B803";
+	in  "B803";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W0ABE03FFFFFFFFFFFFFFFF";
+	in  "BE03%16c";
+	out "R";
+	in  "";
+}
+
+
+read_ds2438_page6 {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W02B806";
+	in  "B806";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W0ABE06FFFFFFFFFFFFFFFF";
+	in  "BE06%16c";
+	out "R";
+	in  "";
+}
+
+# Write DS18B20 Th, Tl and configuration register
+set_ds18b20 {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W044E%(\$1T:Hi-SP.VAL)02x%(\$1T:Lo-SP.VAL)02x7F";
+	in  "4E%*6c";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W024800";
+	in  "4800";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W09BEFFFFFFFFFFFFFFFF";
+	in  "BE%*16c";
+	out "R";
+	in  "";
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W0148";
+	in  "48";
+	wait 50;
+	out "R";
+	in  "";
+}
+
+# Read fast ds18b20 temperature
+convert_ds18b20 {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W0144";
+	in  "44";
+	out "R";
+	in  "";
+}
+
+read_ds18b20 {
+	out "A%(\$1ID-I.VAL)s";
+	in  "%*16c";
+	out "W09BEFFFFFFFFFFFFFFFF";
+	in  "BE%16c";
+	out "R";
+	in  "";
+}
+
+# Read slow ds18b20 temperature
+read_slow_ds18b20 {
+        out "A%(\$1ID-I.VAL)s";
+        in  "%*16c";
+        out "W0144";
+        wait 750;
+        in  "44";
+        out "R";
+        in  "";
+        out "A%(\$1ID-I.VAL)s";
+        in  "%*16c";
+        out "W09BEFFFFFFFFFFFFFFFF";
+        in  "BE%16c";
+        out "R";
+        in  "";
+}
+

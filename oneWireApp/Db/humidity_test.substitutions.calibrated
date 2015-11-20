@@ -1,0 +1,17 @@
+file "ds18b20_slow.template"
+{
+pattern { Sys,      Dev  ,   PORT,  ID  		, NextRawWf			,Offset	}
+  { 5IDB  , "{SENS:001}"  , HA7E_1, "480000058EBF5828"  , "5IDB{SENS:002}Val:Raw-Wf"	,0}
+  { 5IDB  , "{SENS:002}"  , HA7E_1, "8A0000058FCD4328"  , "5IDB{SENS:003}Val:Raw-Wf"	,0}
+  { 5IDB  , "{SENS:003}"  , HA7E_1, "690000058E9FFF28"  , "5IDB{SENS:004}Val:Raw-Wf"	,0}
+  { 5IDB  , "{SENS:004}"  , HA7E_1, "F30000058FBAB228"  , "5IDB{SENS:005}Val:Page0-Wf"	,0}
+
+}
+
+
+file "ds2438.template"
+{
+pattern { Sys,      Dev  ,   PORT,  ID                , Offset }
+
+  { 5IDB  , "{SENS:005}"  , HA7E_1, "C60000006D4F4326", 10 }
+}

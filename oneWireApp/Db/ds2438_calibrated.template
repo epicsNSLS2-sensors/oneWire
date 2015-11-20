@@ -1,0 +1,215 @@
+# Database for DS2438 smart bettery monitor
+
+# Get the sessor 64-bit ID
+# Get the sensor 64-bit ID
+record (stringin, "$(Sys)$(Dev)ID-I")
+{
+        field(DESC, "64-bit ID")
+        field(VAL, "$(ID)")
+}
+
+#record (stringin, "$(Sys)$(Dev)ID-I")
+#{
+#	field(DESC, "64-bit ID")
+#	field(DTYP, "stream")
+#	field(INP,  "@ha7e.proto search_1id $(PORT)")
+#	field(PINI, "1")
+#	field(FLNK, "$(Sys)$(Dev)Rst-Cmd")
+#}
+
+# Set status/configuration register to 0x0F
+record(bo, "$(Sys)$(Dev)Rst-Cmd")
+{
+	field(DESC, "Reset")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto reset_ds2438($(Sys)$(Dev)) $(PORT)")
+}
+
+# Read status/configuration register
+record(waveform, "$(Sys)$(Dev)Val:StsConfig-Wf")
+{
+	field(DESC, "Status/Config Register")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_config($(Sys)$(Dev)) $(PORT)")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+}
+
+# Get raw value
+record(waveform, "$(Sys)$(Dev)Val:Page0-Wf")
+{
+	field(DESC, "Page0 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page0($(Sys)$(Dev)) $(PORT)")
+#	field(SCAN, "10 second")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "$(Sys)$(Dev)DB:ProcPage0-ASub_")
+}
+
+# Convert temperature, voltage, current
+record(aSub, "$(Sys)$(Dev)DB:ProcPage0-ASub_")
+{
+	field(DESC, "Page0 Pr Proc")
+	field(INAM, "aSubConvertDS2438Init")
+	field(SNAM, "aSubConvertDS2438Page0")
+	field(INPA, "$(Sys)$(Dev)Val:Page0-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "$(Sys)$(Dev)T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "$(Sys)$(Dev)E:VDD-I PP MS")
+	field(FTVB, "DOUBLE")
+	field(NOVB, "1")
+	field(OUTC, "$(Sys)$(Dev)E:Sens-I PP MS")
+	field(FTVC, "DOUBLE")
+	field(NOVC, "1")
+}
+
+# Read temperature
+record(ai, "$(Sys)$(Dev)T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "35")
+	field(HIGH, "25")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "$(Sys)$(Dev)T-I")
+}
+
+record(calc, "$(Sys)$(Dev)T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "$(Sys)$(Dev)T:Raw-I PP MS")
+    field(INPB, "$(Offset=0)")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "35")
+	field(HIGH, "25")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(ai, "$(Sys)$(Dev)E:VDD-I")
+{
+	field(DESC, "VDD Volt")
+	field(EGU,  "V")
+	field(PREC, "2")
+	field(HOPR, "10")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(ai, "$(Sys)$(Dev)E:Sens-I")
+{
+	field(DESC, "Vsens")
+	field(EGU,  "V")
+	field(PREC, "4")
+	field(HOPR, "5")
+	field(LOPR, "0")
+	field(FLNK, "$(Sys)$(Dev)E:H-Calc")
+}
+
+# Get raw value
+record(waveform, "$(Sys)$(Dev)Val:Page3-Wf")
+{
+	field(DESC, "Page3 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page3($(Sys)$(Dev)) $(PORT)")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+}
+
+# Get raw value
+record(waveform, "$(Sys)$(Dev)Val:Page6-Wf")
+{
+	field(DESC, "Page6 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page6($(Sys)$(Dev)) $(PORT)")
+	field(PINI, "1")
+	field(NELM, "16")
+	field(FTVL, "STRING")
+	field(FLNK, "$(Sys)$(Dev)DB:ProcPage6-ASub_")	
+}
+
+# Convert offset, slope
+record(aSub, "$(Sys)$(Dev)DB:ProcPage6-ASub_")
+{
+	field(DESC, "Page6 Pr Proc")
+	field(INAM, "aSubConvertDS2438Init")
+	field(SNAM, "aSubConvertDS2438Page6")
+	field(INPA, "$(Sys)$(Dev)Val:Page6-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "$(Sys)$(Dev)Offset-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "$(Sys)$(Dev)Slope-I PP MS")
+	field(FTVB, "DOUBLE")
+	field(NOVB, "1")
+}
+
+# Read battery voltage
+record(ai, "$(Sys)$(Dev)Offset-I")
+{
+	field(DESC, "Offset")
+	field(PREC, "5")
+}
+
+# Read battery current
+record(ai, "$(Sys)$(Dev)Slope-I")
+{
+	field(DESC, "Slope")
+	field(PREC, "4")
+}
+
+# Caculate humidity output voltage
+record(calc, "$(Sys)$(Dev)E:H-Calc")
+{
+	field(DESC, "Humidity Volt")
+	field(INPA, "$(Sys)$(Dev)E:Sens-I")
+	field(INPB, "$(Sys)$(Dev)E:VDD-I")
+	field(INPC, "85.65")
+	field(CALC, "(A/B)*C")
+	field(FLNK, "$(Sys)$(Dev)Val:RawH-Calc")
+}
+
+# Caculate raw humidity
+record(calc, "$(Sys)$(Dev)Val:RawH-Calc")
+{
+	field(DESC, "Raw Humidity")
+	field(INPA, "$(Sys)$(Dev)E:H-Calc")
+	field(INPB, "$(Sys)$(Dev)Offset-I")
+	field(INPC, "$(Sys)$(Dev)Slope-I")
+	field(CALC, "(A-B)/C")
+	field(FLNK, "$(Sys)$(Dev)Val:RelH-Calc")
+}
+
+# Caculate relative humidity
+record(calcout, "$(Sys)$(Dev)Val:RelH-Calc")
+{
+	field(DESC, "Relative Humidity")
+	field(INPA, "$(Sys)$(Dev)Val:RawH-Calc")
+	field(INPB, "1.0546")
+	field(INPC, "0.00216")
+	field(INPD, "$(Sys)$(Dev)T-I")
+	field(CALC, "A/(B-(C*D))")
+	field(OUT,  "$(Sys)$(Dev)Val:RelH-I PP")
+}
+
+# Relative humidity
+record(ai, "$(Sys)$(Dev)Val:RelH-I")
+{
+	field(DESC, "Rel. Humidity")
+	field(PREC, "1")
+	field(EGU,  "%")
+	field(HIGH, "65")
+	field(LOW,  "30")
+	field(HSV,  "MAJOR")
+	field(LSV,  "MINOR")
+}

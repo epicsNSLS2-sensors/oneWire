@@ -1,0 +1,487 @@
+# Database for DS2438 smart bettery monitor
+
+# Get the sessor 64-bit ID
+# Get the sensor 64-bit ID
+record (stringin, "XF-Test{DS2438:1}ID-I")
+{
+        field(DESC, "64-bit ID")
+        field(VAL, "$(ID,undefined)")
+  	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+#record (stringin, "XF-Test{DS2438:1}ID-I")
+#{
+#	field(DESC, "64-bit ID")
+#	field(DTYP, "stream")
+#	field(INP,  "@ha7e.proto search_1id XF_TC1")
+#	field(PINI, "1")
+#	field(FLNK, "XF-Test{DS2438:1}Rst-Cmd")
+#}
+
+# Set status/configuration register to 0x0F
+record(bo, "XF-Test{DS2438:1}Rst-Cmd")
+{
+	field(DESC, "Reset")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto reset_ds2438(XF-Test{DS2438:1}) XF_TC1")
+}
+
+# Read status/configuration register
+record(waveform, "XF-Test{DS2438:1}Val:StsConfig-Wf")
+{
+	field(DESC, "Status/Config Register")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_config(XF-Test{DS2438:1}) XF_TC1")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+}
+
+# Get raw value
+record(waveform, "XF-Test{DS2438:1}Val:Page0-Wf")
+{
+	field(DESC, "Page0 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page0(XF-Test{DS2438:1}) XF_TC1")
+#	field(SCAN, "10 second")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF-Test{DS2438:1}DB:ProcPage0-ASub_")
+}
+
+# Convert temperature, voltage, current
+record(aSub, "XF-Test{DS2438:1}DB:ProcPage0-ASub_")
+{
+	field(DESC, "Page0 Pr Proc")
+	field(INAM, "aSubConvertDS2438Init")
+	field(SNAM, "aSubConvertDS2438Page0")
+	field(INPA, "XF-Test{DS2438:1}Val:Page0-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF-Test{DS2438:1}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF-Test{DS2438:1}E:VDD-I PP MS")
+	field(FTVB, "DOUBLE")
+	field(NOVB, "1")
+	field(OUTC, "XF-Test{DS2438:1}E:Sens-I PP MS")
+	field(FTVC, "DOUBLE")
+	field(NOVC, "1")
+}
+
+# Read temperature
+record(ai, "XF-Test{DS2438:1}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "35")
+	field(HIGH, "25")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF-Test{DS2438:1}T-I")
+}
+
+record(calc, "XF-Test{DS2438:1}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF-Test{DS2438:1}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "35")
+	field(HIGH, "25")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(ai, "XF-Test{DS2438:1}E:VDD-I")
+{
+	field(DESC, "VDD Volt")
+	field(EGU,  "V")
+	field(PREC, "2")
+	field(HOPR, "10")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(ai, "XF-Test{DS2438:1}E:Sens-I")
+{
+	field(DESC, "Vsens")
+	field(EGU,  "V")
+	field(PREC, "4")
+	field(HOPR, "5")
+	field(LOPR, "0")
+	field(FLNK, "XF-Test{DS2438:1}E:H-Calc")
+}
+
+# Get raw value
+record(waveform, "XF-Test{DS2438:1}Val:Page3-Wf")
+{
+	field(DESC, "Page3 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page3(XF-Test{DS2438:1}) XF_TC1")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+}
+
+# Get raw value
+record(waveform, "XF-Test{DS2438:1}Val:Page6-Wf")
+{
+	field(DESC, "Page6 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page6(XF-Test{DS2438:1}) XF_TC1")
+	field(PINI, "1")
+	field(NELM, "16")
+	field(FTVL, "STRING")
+	field(FLNK, "XF-Test{DS2438:1}DB:ProcPage6-ASub_")	
+}
+
+# Convert offset, slope
+record(aSub, "XF-Test{DS2438:1}DB:ProcPage6-ASub_")
+{
+	field(DESC, "Page6 Pr Proc")
+	field(INAM, "aSubConvertDS2438Init")
+	field(SNAM, "aSubConvertDS2438Page6")
+	field(INPA, "XF-Test{DS2438:1}Val:Page6-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF-Test{DS2438:1}Offset-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF-Test{DS2438:1}Slope-I PP MS")
+	field(FTVB, "DOUBLE")
+	field(NOVB, "1")
+}
+
+# Read battery voltage
+record(ai, "XF-Test{DS2438:1}Offset-I")
+{
+	field(DESC, "Offset")
+	field(PREC, "5")
+}
+
+# Read battery current
+record(ai, "XF-Test{DS2438:1}Slope-I")
+{
+	field(DESC, "Slope")
+	field(PREC, "4")
+}
+
+# Caculate humidity output voltage
+record(calc, "XF-Test{DS2438:1}E:H-Calc")
+{
+	field(DESC, "Humidity Volt")
+	field(INPA, "XF-Test{DS2438:1}E:Sens-I")
+	field(INPB, "XF-Test{DS2438:1}E:VDD-I")
+	field(INPC, "85.65")
+	field(CALC, "(A/B)*C")
+	field(FLNK, "XF-Test{DS2438:1}Val:RawH-Calc")
+}
+
+# Caculate raw humidity
+record(calc, "XF-Test{DS2438:1}Val:RawH-Calc")
+{
+	field(DESC, "Raw Humidity")
+	field(INPA, "XF-Test{DS2438:1}E:H-Calc")
+	field(INPB, "XF-Test{DS2438:1}Offset-I")
+	field(INPC, "XF-Test{DS2438:1}Slope-I")
+	field(CALC, "(A-B)/C")
+	field(FLNK, "XF-Test{DS2438:1}Val:RelH-Calc")
+}
+
+# Caculate relative humidity
+record(calcout, "XF-Test{DS2438:1}Val:RelH-Calc")
+{
+	field(DESC, "Relative Humidity")
+	field(INPA, "XF-Test{DS2438:1}Val:RawH-Calc")
+	field(INPB, "1.0546")
+	field(INPC, "0.00216")
+	field(INPD, "XF-Test{DS2438:1}T-I")
+	field(CALC, "A/(B-(C*D))")
+	field(OUT,  "XF-Test{DS2438:1}Val:RelH-I PP")
+}
+
+# Relative humidity
+record(ai, "XF-Test{DS2438:1}Val:RelH-I")
+{
+	field(DESC, "Rel. Humidity")
+	field(PREC, "1")
+	field(EGU,  "%")
+	field(HIGH, "65")
+	field(LOW,  "30")
+	field(HSV,  "MAJOR")
+	field(LSV,  "MINOR")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sessor 64-bit ID
+record (stringin, "XF-Test{DS18B20:2}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto search_2id(XF-Test,{DS18B20:1}) XF_TC2")
+	field(PINI, "1")
+	field(FLNK, "XF-Test{DS18B20:1}ID-I")
+}
+
+
+record (stringin, "XF-Test{DS18B20:1}ID-I")
+{
+	field(DESC, "64-bit ID")
+}
+
+
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sessor 64-bit ID
+record (stringin, "XF-Test{DS18B20:2}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto search_2id(XF-Test,{DS18B20:1}) XF_TC2")
+	field(PINI, "1")
+	field(FLNK, "XF-Test{DS18B20:1}ID-I")
+}
+
+
+record (stringin, "XF-Test{DS18B20:1}ID-I")
+{
+	field(DESC, "64-bit ID")
+}
+
+
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF-Test{DS18B20:1}ID-I")
+{
+        field(DESC, "64-bit ID")
+        field(VAL, "$(ID,undefined)")
+}
+
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF-Test{DS18B20:1}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF-Test{DS18B20:1}) XF_TC2")
+}
+
+# Set high and low alarm
+record(longout, "XF-Test{DS18B20:1}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF-Test{DS18B20:1}T-I.HIGH")
+}
+
+record(longout, "XF-Test{DS18B20:1}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF-Test{DS18B20:1}T-I.LOW")
+}
+
+# Get raw value
+record(bo, "XF-Test{DS18B20:1}Cmd:Convert-Cmd")
+{
+	field(DESC, "T Convert Req")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto convert_ds18b20(XF-Test{DS18B20:1}) XF_TC2")
+}
+
+record(seq, "XF-Test{DS18B20:1}DB:Convert-Seq_")
+{
+	field(DESC, "")
+	field(SCAN, "10 second")
+	field(SELM, "All")
+	field(DO1,  "1")
+	field(DO2,  "1")
+	field(LNK1, "XF-Test{DS18B20:1}Cmd:Convert-Cmd.PROC")
+	field(LNK2, "XF-Test{DS18B20:1}Val:Raw-Wf.PROC")
+	field(DLY2, ".75")
+}
+
+record(waveform, "XF-Test{DS18B20:1}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds18b20(XF-Test{DS18B20:1}) XF_TC2")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF-Test{DS18B20:1}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF-Test{DS18B20:1}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF-Test{DS18B20:1}Val:Raw-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF-Test{DS18B20:1}T-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF-Test{DS18B20:1}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF-Test{DS18B20:1}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+}
+
+# Read temperature
+record(ai, "XF-Test{DS18B20:1}T-I")
+{
+	field(DESC, "Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF-Test{DS18B20:1}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF-Test{DS18B20:1}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF-Test{DS18B20:2}ID-I")
+{
+        field(DESC, "64-bit ID")
+        field(VAL, "$(ID,undefined)")
+}
+
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF-Test{DS18B20:2}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF-Test{DS18B20:2}) XF_TC2")
+}
+
+# Set high and low alarm
+record(longout, "XF-Test{DS18B20:2}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF-Test{DS18B20:2}T-I.HIGH")
+}
+
+record(longout, "XF-Test{DS18B20:2}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF-Test{DS18B20:2}T-I.LOW")
+}
+
+# Get raw value
+record(bo, "XF-Test{DS18B20:2}Cmd:Convert-Cmd")
+{
+	field(DESC, "T Convert Req")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto convert_ds18b20(XF-Test{DS18B20:2}) XF_TC2")
+}
+
+record(seq, "XF-Test{DS18B20:2}DB:Convert-Seq_")
+{
+	field(DESC, "")
+	field(SCAN, "10 second")
+	field(SELM, "All")
+	field(DO1,  "1")
+	field(DO2,  "1")
+	field(LNK1, "XF-Test{DS18B20:2}Cmd:Convert-Cmd.PROC")
+	field(LNK2, "XF-Test{DS18B20:2}Val:Raw-Wf.PROC")
+	field(DLY2, ".75")
+}
+
+record(waveform, "XF-Test{DS18B20:2}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds18b20(XF-Test{DS18B20:2}) XF_TC2")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF-Test{DS18B20:2}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF-Test{DS18B20:2}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF-Test{DS18B20:2}Val:Raw-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF-Test{DS18B20:2}T-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF-Test{DS18B20:2}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF-Test{DS18B20:2}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+}
+
+# Read temperature
+record(ai, "XF-Test{DS18B20:2}T-I")
+{
+	field(DESC, "Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF-Test{DS18B20:2}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF-Test{DS18B20:2}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}

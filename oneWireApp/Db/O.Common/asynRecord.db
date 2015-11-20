@@ -1,0 +1,27 @@
+record(asyn,"XF:10IDA-CT{TC:0}")
+{
+    field(DTYP,"asynRecordDevice")
+    field(PORT,"HA7E_A")
+    field(ADDR,"0")
+    field(OMAX,"0")
+    field(IMAX,"0")
+}
+
+record(asyn,"XF:10IDB-CT{TC:0}")
+{
+    field(DTYP,"asynRecordDevice")
+    field(PORT,"HA7E_B")
+    field(ADDR,"0")
+    field(OMAX,"0")
+    field(IMAX,"0")
+}
+
+record(asyn,"XF:10IDD-CT{TC:0}")
+{
+    field(DTYP,"asynRecordDevice")
+    field(PORT,"HA7E_D")
+    field(ADDR,"0")
+    field(OMAX,"0")
+    field(IMAX,"0")
+}
+

@@ -1,0 +1,5 @@
+epicsEnvSet("ARCH","linux-x86_64")
+epicsEnvSet("IOC","ioconeWire")
+epicsEnvSet("TOP","/epics/iocs/oneWire")
+epicsEnvSet("ASYN","/usr/lib/epics")
+epicsEnvSet("EPICS_BASE","/usr/lib/epics")

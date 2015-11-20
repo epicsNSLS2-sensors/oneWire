@@ -1,0 +1,10 @@
+file asynRecord.template
+{
+	pattern 	{ P		, R		, PORT		, ADDR	, OMAX	, IMAX	}
+#			{ XF-Test	, "{TC:1}"	, XF_TC1		, 0		, 0		, 0		}
+#			{ XF-Test	, "{TC:2}"	, XF_TC2		, 0		, 0		, 0		}
+			{ XF:10IDA-CT	, "{TC:0}"	, HA7E_A		, 0		, 0		, 0		}
+			{ XF:10IDB-CT	, "{TC:0}"	, HA7E_B		, 0		, 0		, 0		}
+#			{ XF:10IDD-CT	, "{TC:0}"	, HA7E_C		, 0		, 0		, 0		}
+			{ XF:10IDD-CT	, "{TC:0}"	, HA7E_D		, 0		, 0		, 0		}
+}

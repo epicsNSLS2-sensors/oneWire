@@ -1,0 +1,1471 @@
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDA{SENS:001}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "9B0000058FCF6C28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDA{SENS:001}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDA{SENS:001}) HA7E_A")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDA{SENS:001}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:001}T-I.HIGH")
+}
+
+record(longout, "XF:10IDA{SENS:001}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:001}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDA{SENS:001}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDA{SENS:001}) HA7E_A")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDA{SENS:001}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDA{SENS:001}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDA{SENS:001}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDA{SENS:001}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDA{SENS:001}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDA{SENS:001}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDA{SENS:002}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDA{SENS:001}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDA{SENS:001}T-I")
+}
+
+record(calc, "XF:10IDA{SENS:001}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDA{SENS:001}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDA{SENS:001}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDA{SENS:001}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDA{SENS:002}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "730000058FB0EC28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDA{SENS:002}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDA{SENS:002}) HA7E_A")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDA{SENS:002}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:002}T-I.HIGH")
+}
+
+record(longout, "XF:10IDA{SENS:002}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:002}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDA{SENS:002}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDA{SENS:002}) HA7E_A")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDA{SENS:002}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDA{SENS:002}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDA{SENS:002}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDA{SENS:002}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDA{SENS:002}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDA{SENS:002}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDA{SENS:003}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDA{SENS:002}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDA{SENS:002}T-I")
+}
+
+record(calc, "XF:10IDA{SENS:002}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDA{SENS:002}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDA{SENS:002}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDA{SENS:002}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDA{SENS:003}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "B80000058F870D28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDA{SENS:003}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDA{SENS:003}) HA7E_A")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDA{SENS:003}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:003}T-I.HIGH")
+}
+
+record(longout, "XF:10IDA{SENS:003}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:003}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDA{SENS:003}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDA{SENS:003}) HA7E_A")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDA{SENS:003}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDA{SENS:003}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDA{SENS:003}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDA{SENS:003}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDA{SENS:003}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDA{SENS:003}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDA{SENS:004}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDA{SENS:003}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDA{SENS:003}T-I")
+}
+
+record(calc, "XF:10IDA{SENS:003}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDA{SENS:003}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDA{SENS:003}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDA{SENS:003}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDA{SENS:004}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "360000058FB64B28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDA{SENS:004}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDA{SENS:004}) HA7E_A")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDA{SENS:004}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:004}T-I.HIGH")
+}
+
+record(longout, "XF:10IDA{SENS:004}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDA{SENS:004}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDA{SENS:004}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDA{SENS:004}) HA7E_A")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDA{SENS:004}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDA{SENS:004}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDA{SENS:004}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDA{SENS:004}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDA{SENS:004}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDA{SENS:004}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "")
+}
+
+# Read temperature
+record(ai, "XF:10IDA{SENS:004}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDA{SENS:004}T-I")
+}
+
+record(calc, "XF:10IDA{SENS:004}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDA{SENS:004}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDA{SENS:004}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDA{SENS:004}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDB{SENS:001}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "EA0000056AB5DE28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDB{SENS:001}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDB{SENS:001}) HA7E_B")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDB{SENS:001}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:001}T-I.HIGH")
+}
+
+record(longout, "XF:10IDB{SENS:001}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:001}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDB{SENS:001}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDB{SENS:001}) HA7E_B")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDB{SENS:001}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDB{SENS:001}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDB{SENS:001}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDB{SENS:001}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDB{SENS:001}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDB{SENS:001}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDB{SENS:002}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDB{SENS:001}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDB{SENS:001}T-I")
+}
+
+record(calc, "XF:10IDB{SENS:001}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDB{SENS:001}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDB{SENS:001}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDB{SENS:001}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDB{SENS:002}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "AD0000058EB6F528")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDB{SENS:002}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDB{SENS:002}) HA7E_B")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDB{SENS:002}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:002}T-I.HIGH")
+}
+
+record(longout, "XF:10IDB{SENS:002}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:002}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDB{SENS:002}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDB{SENS:002}) HA7E_B")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDB{SENS:002}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDB{SENS:002}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDB{SENS:002}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDB{SENS:002}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDB{SENS:002}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDB{SENS:002}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDB{SENS:003}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDB{SENS:002}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDB{SENS:002}T-I")
+}
+
+record(calc, "XF:10IDB{SENS:002}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDB{SENS:002}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDB{SENS:002}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDB{SENS:002}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDB{SENS:003}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "F70000058F45AB28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDB{SENS:003}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDB{SENS:003}) HA7E_B")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDB{SENS:003}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:003}T-I.HIGH")
+}
+
+record(longout, "XF:10IDB{SENS:003}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:003}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDB{SENS:003}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDB{SENS:003}) HA7E_B")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDB{SENS:003}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDB{SENS:003}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDB{SENS:003}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDB{SENS:003}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDB{SENS:003}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDB{SENS:003}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDB{SENS:004}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDB{SENS:003}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDB{SENS:003}T-I")
+}
+
+record(calc, "XF:10IDB{SENS:003}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDB{SENS:003}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDB{SENS:003}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDB{SENS:003}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDB{SENS:004}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "390000058E74E728")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDB{SENS:004}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDB{SENS:004}) HA7E_B")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDB{SENS:004}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:004}T-I.HIGH")
+}
+
+record(longout, "XF:10IDB{SENS:004}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDB{SENS:004}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDB{SENS:004}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDB{SENS:004}) HA7E_B")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDB{SENS:004}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDB{SENS:004}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDB{SENS:004}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDB{SENS:004}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDB{SENS:004}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDB{SENS:004}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "")
+}
+
+# Read temperature
+record(ai, "XF:10IDB{SENS:004}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDB{SENS:004}T-I")
+}
+
+record(calc, "XF:10IDB{SENS:004}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDB{SENS:004}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDB{SENS:004}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDB{SENS:004}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDD{SENS:001}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "660000058FBD6228")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDD{SENS:001}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDD{SENS:001}) HA7E_D")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDD{SENS:001}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDD{SENS:001}T-I.HIGH")
+}
+
+record(longout, "XF:10IDD{SENS:001}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDD{SENS:001}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDD{SENS:001}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDD{SENS:001}) HA7E_D")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDD{SENS:001}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDD{SENS:001}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDD{SENS:001}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDD{SENS:001}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDD{SENS:001}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDD{SENS:001}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDD{SENS:002}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDD{SENS:001}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDD{SENS:001}T-I")
+}
+
+record(calc, "XF:10IDD{SENS:001}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDD{SENS:001}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDD{SENS:001}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDD{SENS:001}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDD{SENS:002}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "2F0000058F915E28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDD{SENS:002}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDD{SENS:002}) HA7E_D")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDD{SENS:002}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDD{SENS:002}T-I.HIGH")
+}
+
+record(longout, "XF:10IDD{SENS:002}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDD{SENS:002}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDD{SENS:002}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDD{SENS:002}) HA7E_D")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDD{SENS:002}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDD{SENS:002}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDD{SENS:002}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDD{SENS:002}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDD{SENS:002}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDD{SENS:002}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDD{SENS:003}Val:Raw-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDD{SENS:002}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDD{SENS:002}T-I")
+}
+
+record(calc, "XF:10IDD{SENS:002}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDD{SENS:002}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDD{SENS:002}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDD{SENS:002}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDD{SENS:003}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "820000058F609D28")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "XF:10IDD{SENS:003}Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20(XF:10IDD{SENS:003}) HA7E_D")
+}
+
+# Set high and low alarm
+record(longout, "XF:10IDD{SENS:003}T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDD{SENS:003}T-I.HIGH")
+}
+
+record(longout, "XF:10IDD{SENS:003}T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "XF:10IDD{SENS:003}T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "XF:10IDD{SENS:003}Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20(XF:10IDD{SENS:003}) HA7E_D")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDD{SENS:003}DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "XF:10IDD{SENS:003}DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "XF:10IDD{SENS:003}Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDD{SENS:003}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDD{SENS:003}T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDD{SENS:003}T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "XF:10IDD{SENS:004}Val:Page0-Wf")
+}
+
+# Read temperature
+record(ai, "XF:10IDD{SENS:003}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDD{SENS:003}T-I")
+}
+
+record(calc, "XF:10IDD{SENS:003}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDD{SENS:003}T:Raw-I PP MS")
+    field(INPB, "0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "XF:10IDD{SENS:003}T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "XF:10IDD{SENS:003}T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+# Database for DS2438 smart bettery monitor
+
+# Get the sessor 64-bit ID
+# Get the sensor 64-bit ID
+record (stringin, "XF:10IDD{SENS:004}ID-I")
+{
+        field(DESC, "64-bit ID")
+        field(VAL, "C20000006CDF9826")
+  	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+#record (stringin, "XF:10IDD{SENS:004}ID-I")
+#{
+#	field(DESC, "64-bit ID")
+#	field(DTYP, "stream")
+#	field(INP,  "@ha7e.proto search_1id HA7E_D")
+#	field(PINI, "1")
+#	field(FLNK, "XF:10IDD{SENS:004}Rst-Cmd")
+#}
+
+# Set status/configuration register to 0x0F
+record(bo, "XF:10IDD{SENS:004}Rst-Cmd")
+{
+	field(DESC, "Reset")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto reset_ds2438(XF:10IDD{SENS:004}) HA7E_D")
+}
+
+# Read status/configuration register
+record(waveform, "XF:10IDD{SENS:004}Val:StsConfig-Wf")
+{
+	field(DESC, "Status/Config Register")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_config(XF:10IDD{SENS:004}) HA7E_D")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+}
+
+# Get raw value
+record(waveform, "XF:10IDD{SENS:004}Val:Page0-Wf")
+{
+	field(DESC, "Page0 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page0(XF:10IDD{SENS:004}) HA7E_D")
+#	field(SCAN, "10 second")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "XF:10IDD{SENS:004}DB:ProcPage0-ASub_")
+}
+
+# Convert temperature, voltage, current
+record(aSub, "XF:10IDD{SENS:004}DB:ProcPage0-ASub_")
+{
+	field(DESC, "Page0 Pr Proc")
+	field(INAM, "aSubConvertDS2438Init")
+	field(SNAM, "aSubConvertDS2438Page0")
+	field(INPA, "XF:10IDD{SENS:004}Val:Page0-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDD{SENS:004}T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDD{SENS:004}E:VDD-I PP MS")
+	field(FTVB, "DOUBLE")
+	field(NOVB, "1")
+	field(OUTC, "XF:10IDD{SENS:004}E:Sens-I PP MS")
+	field(FTVC, "DOUBLE")
+	field(NOVC, "1")
+}
+
+# Read temperature
+record(ai, "XF:10IDD{SENS:004}T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "35")
+	field(HIGH, "25")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "XF:10IDD{SENS:004}T-I")
+}
+
+record(calc, "XF:10IDD{SENS:004}T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "XF:10IDD{SENS:004}T:Raw-I PP MS")
+    field(INPB, "0.0")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "35")
+	field(HIGH, "25")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(ai, "XF:10IDD{SENS:004}E:VDD-I")
+{
+	field(DESC, "VDD Volt")
+	field(EGU,  "V")
+	field(PREC, "2")
+	field(HOPR, "10")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(ai, "XF:10IDD{SENS:004}E:Sens-I")
+{
+	field(DESC, "Vsens")
+	field(EGU,  "V")
+	field(PREC, "4")
+	field(HOPR, "5")
+	field(LOPR, "0")
+	field(FLNK, "XF:10IDD{SENS:004}E:H-Calc")
+}
+
+# Get raw value
+record(waveform, "XF:10IDD{SENS:004}Val:Page3-Wf")
+{
+	field(DESC, "Page3 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page3(XF:10IDD{SENS:004}) HA7E_D")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+}
+
+# Get raw value
+record(waveform, "XF:10IDD{SENS:004}Val:Page6-Wf")
+{
+	field(DESC, "Page6 Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_ds2438_page6(XF:10IDD{SENS:004}) HA7E_D")
+	field(PINI, "1")
+	field(NELM, "16")
+	field(FTVL, "STRING")
+	field(FLNK, "XF:10IDD{SENS:004}DB:ProcPage6-ASub_")	
+}
+
+# Convert offset, slope
+record(aSub, "XF:10IDD{SENS:004}DB:ProcPage6-ASub_")
+{
+	field(DESC, "Page6 Pr Proc")
+	field(INAM, "aSubConvertDS2438Init")
+	field(SNAM, "aSubConvertDS2438Page6")
+	field(INPA, "XF:10IDD{SENS:004}Val:Page6-Wf MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "XF:10IDD{SENS:004}Offset-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "XF:10IDD{SENS:004}Slope-I PP MS")
+	field(FTVB, "DOUBLE")
+	field(NOVB, "1")
+}
+
+# Read battery voltage
+record(ai, "XF:10IDD{SENS:004}Offset-I")
+{
+	field(DESC, "Offset")
+	field(PREC, "5")
+}
+
+# Read battery current
+record(ai, "XF:10IDD{SENS:004}Slope-I")
+{
+	field(DESC, "Slope")
+	field(PREC, "4")
+}
+
+# Caculate humidity output voltage
+record(calc, "XF:10IDD{SENS:004}E:H-Calc")
+{
+	field(DESC, "Humidity Volt")
+	field(INPA, "XF:10IDD{SENS:004}E:Sens-I")
+	field(INPB, "XF:10IDD{SENS:004}E:VDD-I")
+	field(INPC, "85.65")
+	field(CALC, "(A/B)*C")
+	field(FLNK, "XF:10IDD{SENS:004}Val:RawH-Calc")
+}
+
+# Caculate raw humidity
+record(calc, "XF:10IDD{SENS:004}Val:RawH-Calc")
+{
+	field(DESC, "Raw Humidity")
+	field(INPA, "XF:10IDD{SENS:004}E:H-Calc")
+	field(INPB, "XF:10IDD{SENS:004}Offset-I")
+	field(INPC, "XF:10IDD{SENS:004}Slope-I")
+	field(CALC, "(A-B)/C")
+	field(FLNK, "XF:10IDD{SENS:004}Val:RelH-Calc")
+}
+
+# Caculate relative humidity
+record(calcout, "XF:10IDD{SENS:004}Val:RelH-Calc")
+{
+	field(DESC, "Relative Humidity")
+	field(INPA, "XF:10IDD{SENS:004}Val:RawH-Calc")
+	field(INPB, "1.0546")
+	field(INPC, "0.00216")
+	field(INPD, "XF:10IDD{SENS:004}T-I")
+	field(CALC, "A/(B-(C*D))")
+	field(OUT,  "XF:10IDD{SENS:004}Val:RelH-I PP")
+}
+
+# Relative humidity
+record(ai, "XF:10IDD{SENS:004}Val:RelH-I")
+{
+	field(DESC, "Rel. Humidity")
+	field(PREC, "1")
+	field(EGU,  "%")
+	field(HIGH, "65")
+	field(LOW,  "30")
+	field(HSV,  "MAJOR")
+	field(LSV,  "MINOR")
+}

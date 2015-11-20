@@ -1,0 +1,2 @@
+#These substitution files merge data with the template files using the make
+#command.  The resulting .db files are compiled and saved into /epics/iocs/oneWire/db.

@@ -1,0 +1,114 @@
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sensor 64-bit ID
+record (stringin, "$(Sys)$(Dev)ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(VAL, "$(ID)")
+ 	field(UDF, "0") 
+  	field(PINI, "1")
+}
+
+# Write DS18B20 Th, Tl and configuration register
+record(bo, "$(Sys)$(Dev)Cmd:Set-Cmd")
+{
+	field(DESC, "Set")
+	field(DTYP, "stream")
+	field(OUT,  "@ha7e.proto set_ds18b20($(Sys)$(Dev)) $(PORT)")
+}
+
+# Set high and low alarm
+record(longout, "$(Sys)$(Dev)T:Hi-SP")
+{
+	field(DESC, "Set Alarm Hi")
+	field(VAL,  "40")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "$(Sys)$(Dev)T-I.HIGH")
+}
+
+record(longout, "$(Sys)$(Dev)T:Lo-SP")
+{
+	field(DESC, "Set Alarm Lo")
+	field(VAL,  "0")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(OUT,  "$(Sys)$(Dev)T-I.LOW")
+}
+
+# Get raw value
+record(waveform, "$(Sys)$(Dev)Val:Raw-Wf")
+{
+	field(DESC, "Raw Val")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto read_slow_ds18b20($(Sys)$(Dev)) $(PORT)")
+	field(NELM, "16")
+	field(FTVL, "STRING")	
+	field(FLNK, "$(Sys)$(Dev)DB:Proc-ASub_")
+}
+
+# Convert DS18B20 temperature, voltage, current
+record(aSub, "$(Sys)$(Dev)DB:Proc-ASub_")
+{
+	field(DESC, "Raw Pr Proc")
+	field(INAM, "aSubConvertDS18B20Init")
+	field(SNAM, "aSubConvertDS18B20Proc")
+	field(INPA, "$(Sys)$(Dev)Val:Raw-Wf NPP MSS")
+	field(FTA,  "STRING")
+	field(NOA,  "16")	
+	field(OUTA, "$(Sys)$(Dev)T:Raw-I PP MS")
+	field(FTVA, "DOUBLE")
+	field(NOVA, "1")
+	field(OUTB, "$(Sys)$(Dev)T:Hi-RB PP MS")
+	field(FTVB, "SHORT")
+	field(NOVB, "1")
+	field(OUTC, "$(Sys)$(Dev)T:Lo-RB PP MS")
+	field(FTVC, "SHORT")
+	field(NOVC, "1")
+	field(FLNK, "$(NextRawWf)")
+}
+
+# Read temperature
+record(ai, "$(Sys)$(Dev)T:Raw-I")
+{
+	field(DESC, "Uncalibrated Temp Reading")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+    field(FLNK, "$(Sys)$(Dev)T-I")
+}
+
+record(calc, "$(Sys)$(Dev)T-I")
+{
+	field(DESC, "Calibrated Temp Reading")
+    field(INPA, "$(Sys)$(Dev)T:Raw-I PP MS")
+    field(INPB, "$(Offset=0)")
+    field(CALC, "A+B")
+	field(EGU,  "C")
+	field(PREC, "4")
+	field(HIHI, "50")
+	field(HIGH, "40")
+	field(HSV,  "MINOR")
+	field(HHSV, "MAJOR")
+}
+
+# Read battery voltage
+record(longin, "$(Sys)$(Dev)T:Hi-RB")
+{
+	field(DESC, "T Hi RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}
+
+# Read battery current
+record(longin, "$(Sys)$(Dev)T:Lo-RB")
+{
+	field(DESC, "T Lo RB")
+	field(EGU,  "C")
+	field(HOPR, "50")
+	field(LOPR, "0")
+}

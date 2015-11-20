@@ -1,0 +1,19 @@
+file "ds2438.template"
+{
+	pattern	{ Sys		, Dev			, PORT	}
+			{ XF-Test	, "{DS2438:1}"	, XF_TC1	}
+}
+
+file "ds18b20-chain.template"
+{
+	pattern	{ Sys		, PORT	}
+			{ XF-Test	, XF_TC2	}
+			{ XF-Test	, XF_TC2	}
+}
+
+file "ds18b20.template"
+{
+	pattern	{ Sys		, Dev			, PORT	}
+			{ XF-Test	, "{DS18B20:1}"	, XF_TC2	}
+			{ XF-Test	, "{DS18B20:2}"	, XF_TC2	}
+}

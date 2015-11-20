@@ -1,0 +1,19 @@
+# Database for DS18B20 programmable resolution 1-wire digital thermometer
+
+# Get the sessor 64-bit ID
+record (stringin, "$(Sys){DS18B20:2}ID-I")
+{
+	field(DESC, "64-bit ID")
+	field(DTYP, "stream")
+	field(INP,  "@ha7e.proto search_2id($(Sys),{DS18B20:1}) $(PORT)")
+	field(PINI, "1")
+	field(FLNK, "$(Sys){DS18B20:1}ID-I")
+}
+
+
+record (stringin, "$(Sys){DS18B20:1}ID-I")
+{
+	field(DESC, "64-bit ID")
+}
+
+
