@@ -50,7 +50,14 @@ Hutch D chain inside the hutch
 Device	ROM_ID			Health	Channel	Resolution	UsrByte1	UsrByte2
 DS18B20	660000058FBD6228	7	1	12		75		70
 DS18B20	2F0000058F915E28 	7	1	12		75		70
-DS18B20	820000058F609D28 	7	1	12		75		70
+DS18B20	8F0000058FA53528
+DS18B20	820000058F609D28	7	1	12		75		70
 DS2438	C20000006CDF9826	7	2	
 +++++++++++++++++
 
+To read sensor address (capital S, then lowercase s):
+telnet 10.10.57 4008
+S ->     660000058FBD6228
+s ->	 2F0000058F915E28
+s
+s

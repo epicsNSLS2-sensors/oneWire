@@ -27,7 +27,8 @@ pattern { Sys,      Dev  ,   PORT,  ID  		, NextRawWf			,Offset	}
 # IXS 10IDD
   { XF:10IDD  , "{SENS:001}"  , HA7E_D, "660000058FBD6228"  , "XF:10IDD{SENS:002}Val:Raw-Wf"	,0}
   { XF:10IDD  , "{SENS:002}"  , HA7E_D, "2F0000058F915E28"  , "XF:10IDD{SENS:003}Val:Raw-Wf"	,0}
-  { XF:10IDD  , "{SENS:003}"  , HA7E_D, "820000058F609D28"  , "XF:10IDD{SENS:004}Val:Page0-Wf"	,0}
+  { XF:10IDD  , "{SENS:003}"  , HA7E_D, "8F0000058FA53528"  , "XF:10IDD{SENS:004}Val:Raw-Wf"	,0}
+  { XF:10IDD  , "{SENS:004}"  , HA7E_D, "820000058F609D28"  , "XF:10IDD{SENS:005}Val:Page0-Wf"	,0}
 #  { XF:10IDD  , "{SENS:003}"  , HA7E_D, "820000058F609D28"  , "XF:10IDD{SENS:004}Val:Raw-Wf"	,0}
 }
 
@@ -40,5 +41,5 @@ pattern { Sys,      Dev  ,   PORT,  ID                , Offset }
 # IXS 10IDA hutch roof
   { XF:10IDA  , "{SENS:005}"  , HA7E_A, "670000006D761826", 0.0 }
 # IXS 10IDD hutch bottom inner door
-  { XF:10IDD  , "{SENS:004}"  , HA7E_D, "C20000006CDF9826", 0.0 }
+  { XF:10IDD  , "{SENS:005}"  , HA7E_D, "C20000006CDF9826", 0.0 }
 }
