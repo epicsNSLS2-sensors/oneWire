@@ -24,6 +24,12 @@ pattern { Sys,      Dev  ,   PORT,  ID  		, NextRawWf			,Offset	}
   { XF:10IDB  , "{SENS:003}"  , HA7E_B, "F70000058F45AB28"  , "XF:10IDB{SENS:004}Val:Raw-Wf"	,0}
   { XF:10IDB  , "{SENS:004}"  , HA7E_B, "390000058E74E728"  , ""	,0}
 
+# IXS 10IDC hutch string
+  { XF:10IDC  , "{SENS:001}"  , HA7E_C, "DE0000058FA32C28"  , "XF:10IDC{SENS:002}Val:Raw-Wf"	,0}
+  { XF:10IDC  , "{SENS:002}"  , HA7E_C, "630000058F8F7128"  , "XF:10IDC{SENS:003}Val:Raw-Wf"	,0}
+  { XF:10IDC  , "{SENS:003}"  , HA7E_C, "C90000058E470928"  , "XF:10IDC{SENS:004}Val:Raw-Wf"	,0}
+  { XF:10IDC  , "{SENS:004}"  , HA7E_C, "730000032611D728"  , ""	,0}
+
 # IXS 10IDD
   { XF:10IDD  , "{SENS:001}"  , HA7E_D, "660000058FBD6228"  , "XF:10IDD{SENS:002}Val:Raw-Wf"	,0}
   { XF:10IDD  , "{SENS:002}"  , HA7E_D, "2F0000058F915E28"  , "XF:10IDD{SENS:003}Val:Raw-Wf"	,0}
